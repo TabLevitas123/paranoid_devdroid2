@@ -10,10 +10,10 @@ from .communication import CommunicationModule, AdvancedCommunication, MessageBr
 
 __all__ = [
     'communication',
-    # 'memory',
-    # 'machine_learning',
-    # 'user_interface',
-    # 'security',
-    # 'utilities',
-    # 'services',
+     'memory',
+     'machine_learning',
+     'user_interface',
+     'security',
+     'utilities',
+     'services',
 ]

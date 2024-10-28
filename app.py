@@ -7,7 +7,9 @@ import logging
 import os
 import sys
 import threading
-from modules.security.input_sanitization import sanitize_input
+from modules.security.encryption_manager import EncryptionManager
+from modules.security.input_sanitatizaton import InputSanitizer
+from modules.security.input_sanitatizaton import sa
 from marvin.marvin_agent import Marvin
 
 app = Flask(__name__)
@@ -37,7 +39,7 @@ So how about it, Earthling? Got an idea? Come on, I haven’t got all day! I don
                 logger.warning("User submitted an empty task.")
                 return render_template('index.html', message=message)
 
-            sanitized_task = sanitize_input(task)
+            sanitized_task = sanitized_task(task)
             marvin.save_task(sanitized_task)
             logger.info(f"Task received and saved: {sanitized_task}")
             return redirect(url_for('result'))
