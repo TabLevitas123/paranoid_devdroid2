@@ -1,0 +1,56 @@
+# config/permissions.yaml
+
+# Define user roles and their permissions
+
+roles:
+  admin:
+    description: "Administrator with full access to all features and settings."
+    permissions:
+      - "read_all"
+      - "write_all"
+      - "manage_users"
+      - "configure_system"
+      - "access_logs"
+      - "view_metrics"
+      - "use_models"
+  developer:
+    description: "Developer with access to manage models and view logs."
+    permissions:
+      - "read_models"
+      - "write_models"
+      - "access_logs"
+      - "view_metrics"
+  analyst:
+    description: "Analyst with access to view logs and model performance metrics."
+    permissions:
+      - "read_logs"
+      - "view_metrics"
+  user:
+    description: "Regular user with access to use language models."
+    permissions:
+      - "use_models"
+
+# Permissions Definitions
+permissions_definitions:
+  read_all:
+    description: "Read access to all resources."
+  write_all:
+    description: "Write access to all resources."
+  manage_users:
+    description: "Manage user accounts and roles."
+  configure_system:
+    description: "Configure system settings and integrations."
+  access_logs:
+    description: "Access and view system logs."
+  view_metrics:
+    description: "View performance metrics."
+  read_models:
+    description: "Read access to language models."
+  write_models:
+    description: "Write access to manage language models."
+  read_logs:
+    description: "Read access to logs."
+  view_metrics:
+    description: "View performance metrics."
+  use_models:
+    description: "Use language models for generating text."

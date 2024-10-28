@@ -1,0 +1,42 @@
+<!-- templates/notifications.html -->
+
+{% extends "base.html" %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block header %}Notifications{% endblock %}
+
+{% block subheader %}Stay updated with the latest system notifications.{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="list-group">
+            {% for notification in notifications %}
+                <a href="#" class="list-group-item list-group-item-action {% if not notification.read %}list-group-item-warning{% endif %}" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ notification.title }}</h5>
+                        <small>{{ notification.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                    </div>
+                    <p class="mb-1">{{ notification.message }}</p>
+                    {% if not notification.read %}
+                        <small class="text-muted">Unread</small>
+                    {% else %}
+                        <small class="text-muted">Read</small>
+                    {% endif %}
+                </a>
+            {% else %}
+                <div class="alert alert-info" role="alert">
+                    You have no notifications at this time.
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // JavaScript for handling notification interactions can be added here
+</script>
+{% endblock %}

@@ -1,0 +1,176 @@
+<!-- templates/dashboard.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marvin Agent System - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    <script src="{{ url_for('static', filename='js/chart.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/custom.js') }}" defer></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Marvin Agent System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('metrics') }}">Metrics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <h1 class="mb-4">Dashboard</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-header">CPU Usage</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ metrics.cpu_usage }}</h5>
+                        <canvas id="cpuChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-header">Memory Usage</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ metrics.memory_usage }}</h5>
+                        <canvas id="memoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-header">Disk Space</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ metrics.disk_space }}</h5>
+                        <canvas id="diskChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-header">Active Agents</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ metrics.active_agents }}</h5>
+                        <canvas id="agentsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card text-dark bg-light">
+            <div class="card-header">Tasks Processed</div>
+            <div class="card-body">
+                <h5 class="card-title">{{ metrics.tasks_processed }}</h5>
+                <p class="card-text">Number of tasks processed by the system in the current session.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            &copy; {{ current_year }} Marvin Agent System. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Chart.js configurations for CPU Usage
+        const cpuCtx = document.getElementById('cpuChart').getContext('2d');
+        const cpuChart = new Chart(cpuCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Used', 'Free'],
+                datasets: [{
+                    data: [parseInt('{{ metrics.cpu_usage.replace("%","") }}'), 100 - parseInt('{{ metrics.cpu_usage.replace("%","") }}')],
+                    backgroundColor: ['#28a745', '#dc3545'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Chart.js configurations for Memory Usage
+        const memoryCtx = document.getElementById('memoryChart').getContext('2d');
+        const memoryChart = new Chart(memoryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Used', 'Free'],
+                datasets: [{
+                    data: [parseInt('{{ metrics.memory_usage.replace("%","") }}'), 100 - parseInt('{{ metrics.memory_usage.replace("%","") }}')],
+                    backgroundColor: ['#17a2b8', '#ffc107'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Chart.js configurations for Disk Space
+        const diskCtx = document.getElementById('diskChart').getContext('2d');
+        const diskChart = new Chart(diskCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Used', 'Free'],
+                datasets: [{
+                    data: [parseInt('{{ metrics.disk_space.replace("%","") }}'), 100 - parseInt('{{ metrics.disk_space.replace("%","") }}')],
+                    backgroundColor: ['#ffc107', '#6c757d'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Assuming data is passed into JavaScript as variables
+
+// Data for Active Agents
+const activeAgents = metrics.active_agents; // e.g., 10
+
+// Chart.js configurations for Active Agents
+const agentsCtx = document.getElementById('agentsChart').getContext('2d');
+const agentsChart = new Chart(agentsCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Active Agents'],
+        datasets: [{
+            label: '# of Active Agents',
+            data: [activeAgents],
+            backgroundColor: ['#dc3545'],
+            borderColor: ['#bd2130'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                precision: 0
+            }
+        }
+    }
+});

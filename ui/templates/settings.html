@@ -1,0 +1,57 @@
+<!-- templates/settings.html -->
+
+{% extends "base.html" %}
+
+{% block title %}Profile Settings{% endblock %}
+
+{% block header %}Profile Settings{% endblock %}
+
+{% block subheader %}Manage your account settings below.{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <form method="POST" action="{{ url_for('settings') }}">
+            {{ csrf_token() }}
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" value="{{ current_user.username }}" required readonly>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control {% if errors.email %}is-invalid{% endif %}" id="email" name="email" value="{{ current_user.email }}" required>
+                {% if errors.email %}
+                    <div class="invalid-feedback">
+                        {{ errors.email }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">New Password</label>
+                <input type="password" class="form-control {% if errors.password %}is-invalid{% endif %}" id="password" name="password" minlength="8" placeholder="Leave blank to keep current password">
+                {% if errors.password %}
+                    <div class="invalid-feedback">
+                        {{ errors.password }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="confirm_password" class="form-label">Confirm New Password</label>
+                <input type="password" class="form-control {% if errors.confirm_password %}is-invalid{% endif %}" id="confirm_password" name="confirm_password" minlength="8" placeholder="Leave blank to keep current password">
+                {% if errors.confirm_password %}
+                    <div class="invalid-feedback">
+                        {{ errors.confirm_password }}
+                    </div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">Update Settings</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Client-side validation can be added here if necessary
+</script>
+{% endblock %}

@@ -1,0 +1,170 @@
+# config/services_config.yaml
+
+# Configuration for Language Model Services
+
+services:
+  openai:
+    name: "OpenAI"
+    api_endpoint: "https://api.openai.com/v1"
+    models:
+      - id: "gpt-3.5-turbo"
+        description: "GPT-3.5 Turbo model for conversational AI."
+        capabilities:
+          - "text generation"
+          - "summarization"
+          - "translation"
+      - id: "gpt-4"
+        description: "GPT-4 model with enhanced capabilities."
+        capabilities:
+          - "advanced text generation"
+          - "complex reasoning"
+          - "language translation"
+      - id: "text-davinci-003"
+        description: "Davinci model for high-quality text generation."
+        capabilities:
+          - "creative writing"
+          - "content creation"
+          - "technical writing"
+
+    settings:
+      timeout: 60  # seconds
+      retries: 3
+      rate_limit:
+        max_requests_per_minute: 60
+        retry_delay_seconds: 10
+
+  google_palm:
+    name: "Google PaLM"
+    api_endpoint: "https://generativelanguage.googleapis.com/v1beta2/models"
+    models:
+      - id: "models/text-bison-001"
+        description: "Text generation model for generating coherent and contextually relevant text."
+        capabilities:
+          - "text generation"
+          - "question answering"
+          - "text summarization"
+      - id: "models/text-similarity-bison-001"
+        description: "Model for assessing text similarity."
+        capabilities:
+          - "text similarity"
+          - "semantic search"
+      - id: "models/code-bison-001"
+        description: "Model specialized in code generation and understanding."
+        capabilities:
+          - "code generation"
+          - "code completion"
+          - "code summarization"
+
+    settings:
+      timeout: 60  # seconds
+      retries: 3
+      rate_limit:
+        max_requests_per_minute: 120
+        retry_delay_seconds: 10
+
+  azure_openai:
+    name: "Azure OpenAI"
+    api_endpoint: "https://<your-resource-name>.openai.azure.com"
+    api_version: "2023-05-15"
+    deployment_name: "text-davinci-003"
+    models:
+      - id: "text-davinci-003"
+        description: "Azure deployment of OpenAI's Davinci model."
+        capabilities:
+          - "text generation"
+          - "content creation"
+          - "technical writing"
+      - id: "gpt-35-turbo"
+        description: "Azure deployment of OpenAI's GPT-3.5 Turbo model."
+        capabilities:
+          - "conversational AI"
+          - "customer support"
+          - "information retrieval"
+
+    settings:
+      timeout: 60  # seconds
+      retries: 3
+      rate_limit:
+        max_requests_per_minute: 60
+        retry_delay_seconds: 10
+
+  huggingface:
+    name: "Hugging Face"
+    api_endpoint: "https://api-inference.huggingface.co"
+    models:
+      - id: "gpt2"
+        description: "GPT-2 model for general-purpose text generation."
+        capabilities:
+          - "text generation"
+          - "language modeling"
+      - id: "gpt-j-6B"
+        description: "GPT-J model with 6 billion parameters for advanced text generation."
+        capabilities:
+          - "high-quality text generation"
+          - "language translation"
+          - "text summarization"
+      - id: "EleutherAI/gpt-neo-2.7B"
+        description: "GPT-Neo model with 2.7 billion parameters for versatile text generation."
+        capabilities:
+          - "text generation"
+          - "creative writing"
+          - "data augmentation"
+
+    settings:
+      timeout: 120  # seconds
+      retries: 5
+      rate_limit:
+        max_requests_per_minute: 30
+        retry_delay_seconds: 15
+
+  anthropic:
+    name: "Anthropic"
+    api_endpoint: "https://api.anthropic.com/v1"
+    models:
+      - id: "claude-v1"
+        description: "Claude model for conversational AI and text generation."
+        capabilities:
+          - "text generation"
+          - "question answering"
+          - "content moderation"
+      - id: "claude-instant-v1"
+        description: "Claude Instant model for rapid text generation."
+        capabilities:
+          - "real-time text generation"
+          - "summarization"
+          - "translation"
+
+    settings:
+      timeout: 60  # seconds
+      retries: 3
+      rate_limit:
+        max_requests_per_minute: 50
+        retry_delay_seconds: 10
+
+  cohere:
+    name: "Cohere"
+    api_endpoint: "https://api.cohere.ai"
+    models:
+      - id: "command-xlarge-nightly"
+        description: "Command-xlarge model for versatile text generation."
+        capabilities:
+          - "text generation"
+          - "language translation"
+          - "summarization"
+      - id: "command-medium-nightly"
+        description: "Command-medium model for efficient text generation."
+        capabilities:
+          - "text generation"
+          - "content creation"
+      - id: "summarize-xlarge"
+        description: "Summarization model for condensing text."
+        capabilities:
+          - "text summarization"
+          - "information extraction"
+
+    settings:
+      timeout: 60  # seconds
+      retries: 3
+      rate_limit:
+        max_requests_per_minute: 100
+        retry_delay_seconds: 10
