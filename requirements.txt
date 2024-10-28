@@ -1,3 +1,4 @@
+GPUtil
 PIL
 PyPDF2
 bcrypt
@@ -5,6 +6,7 @@ boto3
 botocore
 bs4
 cohere
+csv
 docx
 dotenv
 eth_account
@@ -23,11 +25,13 @@ joblib
 jsonschema
 jwt
 matplotlib
+mnemonic
 neo4j
 nltk
 numpy
 openai
 openpyxl
+paho
 pandas
 pinecone
 pptx
