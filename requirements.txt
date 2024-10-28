@@ -1,6 +1,5 @@
 PIL
 PyPDF2
-__init__
 bcrypt
 boto3
 botocore
