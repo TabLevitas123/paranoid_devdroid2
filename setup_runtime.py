@@ -1,12 +1,103 @@
-#!/usr/bin/env python3
-# setup_runtime.py
-
 import os
 import subprocess
 import sys
+import logging
+import json
+from pathlib import Path
+from cryptography.fernet import Fernet
+from getpass import getpass
+
+# Configure logging
+log_file = 'logs/setup_runtime.log'
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    handlers=[
+        logging.FileHandler(log_file), 
+        logging.StreamHandler()
+    ]
+)
+
+def install_dependencies():
+    try:
+        print("Installing dependencies...")
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', '-r', 'requirements.txt'])
+        logging.info("Dependencies installed successfully.")
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Dependency installation failed: {e}")
+        sys.exit("Failed to install dependencies. Please check the logs for details.")
+
+def install_vlc():
+    try:
+        print("Checking for VLC installation...")
+        subprocess.check_call(['vlc', '--version'])
+        logging.info("VLC is already installed.")
+    except FileNotFoundError:
+        print("VLC not found. Installing VLC...")
+        try:
+            subprocess.check_call(['sudo', 'apt-get', 'update'])
+            subprocess.check_call(['sudo', 'apt-get', 'install', '-y', 'vlc'])
+            logging.info("VLC installed successfully.")
+        except subprocess.CalledProcessError as e:
+            logging.error(f"VLC installation failed: {e}")
+            sys.exit("Failed to install VLC. Please check the logs for details.")
+
+def load_keys():
+    if Path('keys.json').exists():
+        with open('keys.json', 'r') as f:
+            return json.load(f)
+    return {}
+
+def save_keys(keys):
+    with open('keys.json', 'w') as f:
+        json.dump(keys, f)
+
+def get_api_keys(keys):
+    if 'fernet_key' not in keys:
+        keys['fernet_key'] = Fernet.generate_key().decode()
+        save_keys(keys)
+    fernet = Fernet(keys['fernet_key'].encode())
+
+    for key_name in ['API_KEY_1', 'API_KEY_2']:  # Add your API key names here
+        if key_name in keys:
+            if keys[key_name] == 'bugoff':
+                continue
+            elif keys[key_name] != 'skip':
+                decrypted_key = fernet.decrypt(keys[key_name].encode()).decode()
+                print(f"{key_name} is already set.")
+                continue
+
+        while True:
+            user_input = getpass(f"Enter {key_name} (or type 'skip' or 'bugoff'): ").strip()
+            if user_input.lower() == 'skip':
+                keys[key_name] = 'skip'
+                break
+            elif user_input.lower() == 'bugoff':
+                keys[key_name] = 'bugoff'
+                break
+            else:
+                encrypted_key = fernet.encrypt(user_input.encode()).decode()
+                keys[key_name] = encrypted_key
+                break
+
+    save_keys(keys)
+
+def main():
+    install_dependencies()
+    install_vlc()
+    keys = load_keys()
+    get_api_keys(keys)
+    # Add other main tasks here
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        logging.critical(f"Unexpected error in setup_runtime.py: {e}")
+        sys.exit("An unexpected error occurred. Please check the logs for details.")
+
 import threading
 import time
-import logging
 import json
 from pathlib import Path
 from cryptography.fernet import Fernet
@@ -79,14 +170,6 @@ Hurry up. Time means nothing to me, but you should still be quick about it. This
     print(message)
     logging.info("Welcome message displayed to the user.")
 
-def install_dependencies():
-    try:
-        print("Installing dependencies...")
-        subprocess.check_call([sys.executable, '-m', 'pip', 'install', '-r', 'requirements.txt'])
-        logging.info("Dependencies installed successfully.")
-    except subprocess.CalledProcessError as e:
-        logging.error(f"Dependency installation failed: {e}")
-        sys.exit("Failed to install dependencies. Please check the logs for details.")
 
 def collect_api_keys():
     api_keys = {}
@@ -153,7 +236,6 @@ def launch_applications():
 
 def main():
     try:
-        install_dependencies()
         display_welcome_message()
         collect_api_keys()
         print("Launching applications...")

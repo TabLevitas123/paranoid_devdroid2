@@ -1,0 +1,8 @@
+access_token
+api_key
+client_secret
+Endpoint
+base_url
+client_id
+endpoint
+api_url

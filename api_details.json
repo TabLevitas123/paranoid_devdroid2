@@ -1,0 +1,8 @@
+{
+    "openweathermap": "https://api.openweathermap.org/data/2.5')",
+    "alphavantage": "https://www.alphavantage.co/query')",
+    "libretranslate": "https://libretranslate.de/detect')",
+    "openai": "https://api.openai.com/v1/engines/davinci/completions')",
+    "newsapi": "https://newsapi.org/v2')",
+    "localhost:8000',": "http://localhost:8000',"
+}
